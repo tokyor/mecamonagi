@@ -19,10 +19,10 @@ You can configure the intagration here: https://YOURTEAM.slack.com/services/new/
 
 You will find "API Token", which you will use on the next step.
 
-## 2. Run Docker
+## 2. Run Docker Container
 
 ```sh
-docker run -e HUBOT_SLACK_TOKEN=XXXXXXXXXX hubot-rserve -d
+docker run -d -e HUBOT_SLACK_TOKEN=XXXXXXXXXX yutannihilation/hubot-rserve
 ```
 
 ## 3. Talk To Hubot
@@ -36,3 +36,22 @@ r! summary(lm(speed~dist,data=cars))
 The hubot answers immediately like this:
 
 ![screen](screenshot.png)
+
+# Development
+
+```sh
+docker run --user=root -t -i yutannihilation/hubot-rserve /bin/bash
+
+# Inside the hubot-rserve container ----------------
+# customize the heart of mecamonagi
+vi scripts/mecamonagi.coffee
+
+# add some script
+vi scripts/some-awesome-script.coffee
+
+# run Rserve
+R CMD Rserve --vanilla
+
+# run hubot
+HUBOT_SLACK_TOKEN=XXXXXXXXXX bin/hubot -a slack
+```
