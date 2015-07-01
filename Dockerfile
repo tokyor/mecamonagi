@@ -19,5 +19,5 @@ WORKDIR /hubot
 RUN yo hubot --owner="You" --name="HuBot" --description="HuBot on Docker" --defaults
 RUN npm install hubot-slack rserve-client --save && npm install
 
-ADD mechamonagi.coffee /hubot/scripts/
+ADD mecamonagi.coffee /hubot/scripts/
 CMD R CMD Rserve --vanilla && bin/hubot -a slack

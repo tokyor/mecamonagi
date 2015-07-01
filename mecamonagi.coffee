@@ -26,7 +26,7 @@ module.exports = (robot) ->
       client.evaluate( (head + script + tail), (err, ans) ->
         console.log(ans.toString())
         msg.emote(ans.toString())
-        msg.emote "This is the result by mechamonagi :)"
+        msg.emote "This is the result by mecamonagi :)"
         client.end()
       )
     )
