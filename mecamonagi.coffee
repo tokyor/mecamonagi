@@ -1,4 +1,5 @@
 # Auther: @teramonagi
+rio = require('rio')
 
 module.exports = (robot) ->
   robot.hear /ping/i, (res) ->
@@ -19,14 +20,17 @@ module.exports = (robot) ->
   
   robot.hear /^(r\!)(\s|\n)+([^\s\n][\s\S]*)/i, (msg)->
     script = msg.match[3].trim()
-    head = "paste(capture.output({"    
-    tail = "}), collapse='\n')"
-    r = require('rserve-client')
-    r.connect('localhost', 6311, (err, client) -> 
-      client.evaluate( (head + script + tail), (err, ans) ->
-        console.log(ans.toString())
-        msg.emote(ans.toString())
-        msg.emote "This is the result by mecamonagi :)"
-        client.end()
-      )
-    )
+    script_wrapped = "paste(capture.output({" + script + "}), collapse='\n')"
+    rio.evaluate(script_wrapped, {callback: (err, ans) ->
+      # debug
+      console.log("Result:\n" + ans)
+      console.log("Error:\n" + err)
+
+      # err can be true when no output is aquired; so we have to rely on typeof
+      if typeof err == "string"
+        msg.emote "Error!\n```\n" + err + "```"
+      else if ans?
+        msg.emote "```\n" + ans + "\n```"
+      msg.emote "This is the result by mecamonagi :)"
+    })
+ 
