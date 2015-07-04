@@ -22,8 +22,15 @@ module.exports = (robot) ->
     script = msg.match[3].trim()
     script_wrapped = "paste(capture.output({" + script + "}), collapse='\n')"
     rio.evaluate(script_wrapped, {callback: (err, ans) ->
-      msg.emote "```\n" + ans + "\n```"
+      # debug
+      console.log("Result:\n" + ans)
+      console.log("Error:\n" + err)
+
+      # err can be true when no output is aquired; so we have to rely on typeof
+      if typeof err == "string"
+        msg.emote "Error!\n```\n" + err + "```"
+      else if ans?
+        msg.emote "```\n" + ans + "\n```"
       msg.emote "This is the result by mecamonagi :)"
-      console.log(ans)
     })
  
