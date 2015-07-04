@@ -21,8 +21,10 @@ You will find "API Token", which you will use on the next step.
 
 ## 2. Run Docker Container
 
+In addition to a Slack API Token, you need an imgur API key to upload images.(bot cannot use file upload API)
+
 ```sh
-docker run -d -e HUBOT_SLACK_TOKEN=XXXXXXXXXX yutannihilation/hubot-rserve
+docker run -d -e HUBOT_SLACK_TOKEN=XXXXXXXXXX -e IMGUR_CLIENT_ID=YYYYYYYY yutannihilation/hubot-rserve
 ```
 
 ## 3. Talk To Hubot
