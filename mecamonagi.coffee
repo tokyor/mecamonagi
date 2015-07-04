@@ -33,4 +33,24 @@ module.exports = (robot) ->
         msg.emote "```\n" + ans + "\n```"
       msg.emote "This is the result by mecamonagi :)"
     })
- 
+
+  robot.hear /^(plot\!)(\s|\n)+([^\s\n][\s\S]*)/i, (msg)->
+    script = msg.match[3].trim()
+    script_wrapped = "f <- tempfile(fileext = '.png'); png(f);" +
+                     script + ";" +
+                     "dev.off();" +
+                     "res <- knitr::imgur_upload(f, Sys.getenv('IMGUR_CLIENT_ID'));" +
+                     "paste(capture.output({as.character(res)}))"
+    rio.evaluate(script_wrapped, {callback: (err, ans) ->
+      # debug
+      console.log("Result:\n" + ans)
+      console.log("Error:\n" + err)
+
+      # err can be true when no output is aquired; so we have to rely on typeof
+      if typeof err == "string"
+        msg.emote "Error!\n```\n" + err + "```"
+      else if ans?
+        msg.emote ans 
+      msg.emote "This is the result by mecamonagi :)"
+    })
+
