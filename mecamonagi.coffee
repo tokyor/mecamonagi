@@ -57,22 +57,28 @@ module.exports = (robot) ->
     })
 
   robot.hear /^(plot\!)(\s|\n)+([^\s\n][\s\S]*)/i, (msg)->
-    script = msg.match[3].trim()
-    script_wrapped = "f <- tempfile(fileext = '.png'); png(f);" +
-                     script + ";" +
-                     "dev.off();" +
-                     "res <- knitr::imgur_upload(f, '" + process.env.IMGUR_CLIENT_ID + "');" +
-                     "paste(capture.output({as.character(res)}))"
-    rio.evaluate(script_wrapped, {callback: (err, ans) ->
-      # debug
-      console.log("Result:\n" + ans)
-      console.log("Error:\n" + err)
+    params = {
+      script: Buffer(msg.match[3].trim()).toString('base64'),
+      web_api_token: process.env.SLACK_WEB_API_TOKEN,
+      channel: msg.message.room
+    }
 
-      # err can be true when no output is aquired; so we have to rely on typeof
-      if typeof err == "string"
-        msg.emote "Error!\n```\n" + err + "```"
-      else if ans?
-        msg.emote ans 
-      msg.emote "This is the result by mecamonagi :)"
+    rio.sourceAndEval(path.join(__dirname, "R", "simple_exec.R"), {
+      entryPoint: "simple_plot",
+      data: params,
+      callback: (err, ans_raw) ->
+        ans = JSON.parse(ans_raw)
+        # debug
+        console.log(JSON.stringify(ans))
+
+        # err can be true when no output is aquired; so we have to rely on typeof
+        if ans.error
+          msg.emote "Error!"
+          msg.emote "```\n" + ans.error + "\n```"
+        if ans.warning
+          msg.emote "Warning..."
+          msg.emote "```\n" + ans.warning + "\n```"
+        if ans.result
+          msg.emote "```\n" + ans.result + "\n```"
+        msg.emote "This is the result by mecamonagi :)"
     })
-

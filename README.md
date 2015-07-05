@@ -3,7 +3,7 @@ A Docker Image for hubot that can talk R (a.k.a. mecamonagi)
 
 **Note that the heart of this hubot is made by @teramonagi. Thanks for your great work!**
 
-# Pull
+## Pull
 
 hubot-rserve Docker image is now on Docker Hub: https://registry.hub.docker.com/u/yutannihilation/hubot-rserve/
 
@@ -11,23 +11,26 @@ hubot-rserve Docker image is now on Docker Hub: https://registry.hub.docker.com/
 docker pull yutannihilation/hubot-rserve
 ```
 
-# Run
+## Run
 
-## 1. Configure Hubot Integration
+### 1. Configure Hubot Integration
 
 You can configure the intagration here: https://YOURTEAM.slack.com/services/new/hubot
 
 You will find "API Token", which you will use on the next step.
 
-## 2. Run Docker Container
+### 2. Run Docker Container
 
-In addition to a Slack API Token, you need an imgur API key to upload images.(bot cannot use file upload API)
+In addition to a Slack Hubot API token, you need an Slack Web API tokan to upload images. (bot cannot use file upload API)
 
 ```sh
-docker run -d -e HUBOT_SLACK_TOKEN=XXXXXXXXXX -e IMGUR_CLIENT_ID=YYYYYYYY yutannihilation/hubot-rserve
+docker run -d \
+  -e HUBOT_SLACK_TOKEN=XXXXXXXXXX \
+  -e SLACK_WEB_API_TOKEN=YYYYYYYYY \
+  yutannihilation/hubot-rserve
 ```
 
-## 3. Talk To Hubot
+### 3. Talk To Hubot
 
 This hubot can execute arbitary R scripts like this:
 
@@ -39,7 +42,28 @@ The hubot answers immediately like this:
 
 ![screen](screenshot.png)
 
-# Development
+
+#### Available Commands
+
+##### Exec Script
+
+```
+r! COMMAND
+```
+
+##### Plot
+
+```
+plot! COMMAND
+```
+
+##### Get Weather Forecast
+
+```
+weather! LOCATION
+```
+
+## Development
 
 ```sh
 docker run --user=root -t -i yutannihilation/hubot-rserve /bin/bash
@@ -55,5 +79,5 @@ vi scripts/some-awesome-script.coffee
 R CMD Rserve --vanilla
 
 # run hubot
-HUBOT_SLACK_TOKEN=XXXXXXXXXX bin/hubot -a slack
+HUBOT_SLACK_TOKEN=XXXXXXXXXX SLACK_WEB_API_TOKEN=YYYYYYYY bin/hubot -a slack
 ```
