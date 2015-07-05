@@ -39,7 +39,7 @@ module.exports = (robot) ->
     script_wrapped = "f <- tempfile(fileext = '.png'); png(f);" +
                      script + ";" +
                      "dev.off();" +
-                     "res <- knitr::imgur_upload(f, Sys.getenv('IMGUR_CLIENT_ID'));" +
+                     "res <- knitr::imgur_upload(f, '" + process.env.IMGUR_CLIENT_ID + "');" +
                      "paste(capture.output({as.character(res)}))"
     rio.evaluate(script_wrapped, {callback: (err, ans) ->
       # debug
