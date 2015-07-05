@@ -1,5 +1,6 @@
 # Auther: @teramonagi
 rio = require('rio')
+path = require('path')
 
 module.exports = (robot) ->
   robot.hear /ping/i, (res) ->
@@ -19,19 +20,28 @@ module.exports = (robot) ->
     res.emote "makes a freshly baked pie"
   
   robot.hear /^(r\!)(\s|\n)+([^\s\n][\s\S]*)/i, (msg)->
-    script = msg.match[3].trim()
-    script_wrapped = "paste(capture.output({" + script + "}), collapse='\n')"
-    rio.evaluate(script_wrapped, {callback: (err, ans) ->
-      # debug
-      console.log("Result:\n" + ans)
-      console.log("Error:\n" + err)
+    params = {
+      script: msg.match[3].trim().replace(/\"/g, "\\\"")
+    }
 
-      # err can be true when no output is aquired; so we have to rely on typeof
-      if typeof err == "string"
-        msg.emote "Error!\n```\n" + err + "```"
-      else if ans?
-        msg.emote "```\n" + ans + "\n```"
-      msg.emote "This is the result by mecamonagi :)"
+    rio.sourceAndEval(path.join(__dirname, "R", "simple_exec.R"), {
+      entryPoint: "simple_exec",
+      data: params,
+      callback: (err, ans_raw) ->
+        ans = JSON.parse(ans_raw)
+        # debug
+        console.log(JSON.stringify(ans))
+
+        # err can be true when no output is aquired; so we have to rely on typeof
+        if ans.error
+          msg.emote "Error!"
+          msg.emote "```\n" + ans.error + "\n```"
+        if ans.warning
+          msg.emote "Warning..."
+          msg.emote "```\n" + ans.warning + "\n```"
+        if ans.result
+          msg.emote "```\n" + ans.result + "\n```"
+        msg.emote "This is the result by mecamonagi :)"
     })
 
   robot.hear /^(weather\!)(\s|\n)+([^\s\n][\s\S]*)/i, (msg)->
