@@ -34,6 +34,18 @@ module.exports = (robot) ->
       msg.emote "This is the result by mecamonagi :)"
     })
 
+  robot.hear /^(weather\!)(\s|\n)+([^\s\n][\s\S]*)/i, (msg)->
+    location = msg.match[3].trim()
+    script = "library(jsonlite); library(RCurl); fromJSON(getURLContent(\"http://api.openweathermap.org/data/2.5/weather?q=#{location}\"))$weather$main"
+    script_wrapped = "paste(capture.output({" + script + "}), collapse='\n')"
+    rio.evaluate(script_wrapped, {callback: (err, ans) ->
+      # debug
+      console.log("Result:\n" + ans)
+      console.log("Error:\n" + err)
+	
+      msg.emote "```\n" + ans + "\n```"
+    })
+
   robot.hear /^(plot\!)(\s|\n)+([^\s\n][\s\S]*)/i, (msg)->
     script = msg.match[3].trim()
     script_wrapped = "f <- tempfile(fileext = '.png'); png(f);" +
