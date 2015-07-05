@@ -28,7 +28,7 @@ wrap_func <- function(fun) {
 
 simple_exec_ <- function(params) {
   paste0(capture.output({
-    eval(parse(text = params$script))
+    eval(parse(text = RCurl::base64Decode(params$script)))
   }), collapse = "\n")
 }
 

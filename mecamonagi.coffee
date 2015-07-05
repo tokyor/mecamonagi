@@ -21,7 +21,7 @@ module.exports = (robot) ->
   
   robot.hear /^(r\!)(\s|\n)+([^\s\n][\s\S]*)/i, (msg)->
     params = {
-      script: msg.match[3].trim().replace(/\"/g, "\\\"")
+      script: Buffer(msg.match[3].trim()).toString('base64')
     }
 
     rio.sourceAndEval(path.join(__dirname, "R", "simple_exec.R"), {
