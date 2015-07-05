@@ -35,7 +35,8 @@ simple_exec <- wrap_func(simple_exec_)
 
 
 simple_plot_ <- function(params) {
-  f <- tempfile(fileext = '.png')
+  f <- tempfile(tmpdir = getwd(), fileext = '.png')
+  on.exit(file.remove(f))
   png(f)
   print(eval(parse(text = RCurl::base64Decode(params$script))))
   dev.off()
