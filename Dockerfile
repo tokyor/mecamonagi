@@ -21,4 +21,7 @@ RUN npm install hubot-slack rio --save && npm install
 
 ADD mecamonagi.coffee /hubot/scripts/
 COPY R /hubot/scripts/R
+ADD .Rprofile /hubot/
+ADD Rserv.conf /etc/
+
 CMD env -i R CMD Rserve --vanilla && bin/hubot -a slack
