@@ -40,7 +40,7 @@ module.exports = (robot) ->
           msg.emote "Warning..."
           msg.emote "```\n" + ans.warning + "\n```"
         if ans.result
-          msg.emote "```\n" + ans.result + "\n```"
+          msg.emote "```\n" + Buffer(ans.result, 'base64').toString() + "\n```"
         msg.emote "This is the result by mecamonagi :)"
     })
 
