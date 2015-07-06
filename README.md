@@ -32,7 +32,7 @@ docker run -d \
 
 ### 3. Talk To Hubot
 
-This hubot can execute arbitary R scripts like this:
+This hubot can execute arbitrary R scripts like this:
 
 ```sh
 r! summary(lm(speed~dist,data=cars)) 
