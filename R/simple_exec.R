@@ -26,11 +26,15 @@ wrap_func <- function(fun) {
 
 
 simple_exec_ <- function(params) {
+  MAX_LINES <- 30
   script <- RCurl::base64Decode(params$script)
-  output <- paste0(capture.output({
+  output <- capture.output({
     eval(parse(text = script))
-  }), collapse = "\n")
-  as.character(RCurl::base64Encode(output))
+  })
+  if (length(output) > MAX_LINES) {
+    output <- c(head(output, MAX_LINES), "...")
+  }
+  as.character(RCurl::base64Encode(paste0(output, collapse = "\n")))
 }
 
 simple_exec <- wrap_func(simple_exec_)
