@@ -18,8 +18,11 @@ module.exports = (robot) ->
   
   robot.hear /I like pie/i, (res) ->
     res.emote "makes a freshly baked pie"
+
+  robot.hear /ぞうさん通信出たよ/i, (res) ->
+    res.emote "Awesome!!!"
   
-  robot.hear /^(r\!)(\s|\n)+([^\s\n][\s\S]*)/i, (msg)->
+  robot.hear /^(あ～る！)(\s|\n)*([^\s\n][\s\S]*)/i, (msg)->
     params = {
       script: Buffer(msg.match[3].trim()).toString('base64')
     }
