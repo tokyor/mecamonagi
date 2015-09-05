@@ -1,4 +1,4 @@
-A Docker Image for hubot that can talk R (a.k.a. mecamonagi)
+mecamonagi - A Docker Image for hubot that can talk R
 ========================================
 
 **Note that the heart of this hubot is made by @teramonagi. Thanks for your great work!**
