@@ -5,10 +5,10 @@ mecamonagi - A Docker Image for hubot that can talk R
 
 ## Pull
 
-hubot-rserve Docker image is now on Docker Hub: https://registry.hub.docker.com/u/yutannihilation/hubot-rserve/
+hubot-rserve Docker image is now on Docker Hub: https://registry.hub.docker.com/u/tokyor/mecamonagi/
 
 ```sh
-docker pull yutannihilation/hubot-rserve
+docker pull tokyor/mecamonagi
 ```
 
 ## Run
@@ -27,7 +27,7 @@ In addition to a Slack Hubot API token, you need an Slack Web API tokan to uploa
 docker run -d \
   -e HUBOT_SLACK_TOKEN=XXXXXXXXXX \
   -e SLACK_WEB_API_TOKEN=YYYYYYYYY \
-  yutannihilation/hubot-rserve
+  tokyor/mecamonagi
 ```
 
 ### 3. Talk To Hubot
@@ -66,7 +66,7 @@ weather! LOCATION
 ## Development
 
 ```sh
-docker run --user=root -t -i yutannihilation/hubot-rserve /bin/bash
+docker run --user=root -t -i tokyor/mecamonagi /bin/bash
 
 # Inside the hubot-rserve container ----------------
 # customize the heart of mecamonagi
