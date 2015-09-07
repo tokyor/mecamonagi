@@ -41,7 +41,6 @@ module.exports = (robot) ->
           msg.emote "```\n" + ans.warning + "\n```"
         if ans.result
           msg.emote "```\n" + Buffer(ans.result, 'base64').toString() + "\n```"
-        msg.emote "This is the result by mecamonagi :)"
     })
 
   robot.hear /^(weather\!)(\s|\n)+([^\s\n][\s\S]*)/i, (msg)->
